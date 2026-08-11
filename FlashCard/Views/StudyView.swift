@@ -19,6 +19,7 @@ struct StudyView: View {
     @AppStorage("shuffleCards") private var shuffleCards: Bool = true
     @AppStorage("cardsPerSession") private var cardsPerSession: Int = 10
     @AppStorage("themeColor") private var themeColorName: String = "Blue"
+    @AppStorage("fontSize") private var fontSizeName: String = "Medium"
     
     var body: some View {
         VStack(spacing: 16) {
@@ -30,7 +31,7 @@ struct StudyView: View {
                     Spacer()
                     Text("Score: \(correctCount) / \(scores.count)")
                 }
-                .font(.headline)
+                .font(.system(size: bodyFontSize, weight: .semibold))
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
@@ -42,7 +43,7 @@ struct StudyView: View {
                         )
                     
                     Text(currentText)
-                        .font(.title2)
+                        .font(.system(size: cardFontSize, weight: .semibold))
                         .multilineTextAlignment(.center)
                         .padding()
                 }
@@ -116,6 +117,28 @@ struct StudyView: View {
             return .purple
         default:
             return .blue
+        }
+    }
+    
+    private var bodyFontSize: Double {
+        switch fontSizeName {
+        case "Small":
+            return 15
+        case "Large":
+            return 21
+        default:
+            return 17
+        }
+    }
+    
+    private var cardFontSize: Double {
+        switch fontSizeName {
+        case "Small":
+            return 20
+        case "Large":
+            return 30
+        default:
+            return 24
         }
     }
     

@@ -12,6 +12,8 @@ struct SettingsView: View {
     @AppStorage("shuffleCards") private var shuffleCards: Bool = true
     @AppStorage("cardsPerSession") private var cardsPerSession: Int = 10
     @AppStorage("themeColor") private var themeColorName: String = "Blue"
+    @AppStorage("fontSize") private var fontSizeName: String = "Medium"
+    @AppStorage("darkMode") private var darkMode: Bool = false
     
     var body: some View {
         
@@ -30,6 +32,14 @@ struct SettingsView: View {
                     Text("Orange").tag("Orange")
                     Text("Purple").tag("Purple")
                 }
+                
+                Picker("Font Size", selection: $fontSizeName) {
+                    Text("Small").tag("Small")
+                    Text("Medium").tag("Medium")
+                    Text("Large").tag("Large")
+                }
+                
+                Toggle("Dark Mode", isOn: $darkMode)
             }
             
             Section("About") {

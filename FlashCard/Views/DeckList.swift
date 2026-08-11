@@ -9,6 +9,7 @@ import SwiftUI
 
 struct DeckList: View {
     @EnvironmentObject var store: DeckStore
+    @AppStorage("fontSize") private var fontSizeName: String = "Medium"
     
     var body: some View {
         List {
@@ -19,9 +20,9 @@ struct DeckList: View {
                     } label: {
                         VStack(alignment: .leading) {
                             Text(deck.name)
-                                .font(.headline)
+                                .font(.system(size: titleFontSize, weight: .semibold))
                             Text("\(deck.card.count) cards")
-                                .font(.subheadline)
+                                .font(.system(size: subtitleFontSize))
                         }
                     }
                 }
@@ -37,6 +38,28 @@ struct DeckList: View {
                         Image(systemName: "gearshape.fill")
                 }
             }
+        }
+    }
+    
+    private var titleFontSize: Double {
+        switch fontSizeName {
+        case "Small":
+            return 16
+        case "Large":
+            return 22
+        default:
+            return 18
+        }
+    }
+    
+    private var subtitleFontSize: Double {
+        switch fontSizeName {
+        case "Small":
+            return 13
+        case "Large":
+            return 18
+        default:
+            return 15
         }
     }
 }

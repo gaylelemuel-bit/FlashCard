@@ -6,17 +6,12 @@
 //
 
 import SwiftUI
-import Combine
+
 @main
 struct FlashCardApp: App {
-    @StateObject var store = DeckStore()
-    
     var body: some Scene {
         WindowGroup {
-            NavigationStack{
-                DeckList()
-            }
-            .environmentObject(store)
+            ContentView()
         }
     }
 }

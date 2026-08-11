@@ -9,12 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var deckStore = DeckStore()
+    @AppStorage("darkMode") private var darkMode: Bool = false
     
     var body: some View {
         NavigationStack {
             DeckList()
                 .environmentObject(deckStore)
         }
+        .preferredColorScheme(darkMode ? .dark : .light)
     }
 }
 
