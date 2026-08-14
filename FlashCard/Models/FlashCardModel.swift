@@ -6,17 +6,15 @@
 //
 import Foundation
 
-struct Deck:Identifiable{
+struct Flashcard: Identifiable, Codable, Equatable {
     
-    let id:UUID = UUID()
-    var name:String
-    var card:[Flashcard]
-}
-
-struct Flashcard:Identifiable{
+    var id: UUID = UUID()
+    var front: String
+    var back: String
     
-    let id:UUID = UUID()
-    var front:String
-    var back:String
-    
+    init(id: UUID = UUID(), front: String, back: String) {
+        self.id = id
+        self.front = front
+        self.back = back
+    }
 }

@@ -14,8 +14,8 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             DeckList()
-                .environmentObject(deckStore)
         }
+        .environmentObject(deckStore)
         .preferredColorScheme(darkMode ? .dark : .light)
     }
 }

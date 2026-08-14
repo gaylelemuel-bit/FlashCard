@@ -25,7 +25,7 @@ struct SettingsView: View {
                 value: $cardsPerSession, in: 1...50)
             }
             
-            Section("Theme") {
+            Section("Appearance") {
                 Picker("Color", selection: $themeColorName) {
                     Text("Blue").tag("Blue")
                     Text("Green").tag("Green")

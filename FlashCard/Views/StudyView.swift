@@ -22,62 +22,83 @@ struct StudyView: View {
     @AppStorage("fontSize") private var fontSizeName: String = "Medium"
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 20) {
             if sessionCards.isEmpty {
-                Text("No cards inside deck")
+                ContentUnavailableView("No Cards", systemImage: "rectangle.stack.badge.plus", description: Text("Add cards to this deck before studying."))
             } else {
                 HStack {
-                    Text("\(index + 1) / \(sessionCards.count)")
+                    Text("Card \(index + 1) of \(sessionCards.count)")
                     Spacer()
                     Text("Score: \(correctCount) / \(scores.count)")
                 }
                 .font(.system(size: bodyFontSize, weight: .semibold))
                 
+                Text(showingFront ? "Front" : "Back")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
+                
                 ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(themeColor.opacity(0.15))
-                        .frame(height: 220)
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(.background)
+                        .shadow(color: .black.opacity(0.12), radius: 14, x: 0, y: 8)
                         .overlay(
-                            RoundedRectangle(cornerRadius: 16)
+                            RoundedRectangle(cornerRadius: 18)
+                                .fill(themeColor.opacity(0.12))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18)
                                 .stroke(themeColor, lineWidth: 2)
                         )
                     
                     Text(currentText)
                         .font(.system(size: cardFontSize, weight: .semibold))
                         .multilineTextAlignment(.center)
-                        .padding()
+                        .padding(24)
                 }
+                .frame(maxWidth: .infinity)
+                .frame(height: 260)
                 .onTapGesture {
                     isFlipped.toggle()
                 }
                 
                 HStack {
-                    Button("Previous") {
+                    Button {
                         prev()
+                    } label: {
+                        Label("Previous", systemImage: "chevron.left")
                     }
-                        .buttonStyle(.borderedProminent)
-                        .disabled(index == 0)
+                    .buttonStyle(.bordered)
+                    .disabled(index == 0)
                     
-                    Button("Flip Card") {
+                    Button {
                         isFlipped.toggle()
+                    } label: {
+                        Label("Flip", systemImage: "arrow.triangle.2.circlepath")
                     }
-                        .buttonStyle(.borderedProminent)
+                    .buttonStyle(.borderedProminent)
                     
-                    Button("Next") {
+                    Button {
                         nextCard()
+                    } label: {
+                        Label("Next", systemImage: "chevron.right")
                     }
-                        .buttonStyle(.borderedProminent)
-                        .disabled(index == sessionCards.count - 1)
+                    .buttonStyle(.bordered)
+                    .disabled(index == sessionCards.count - 1)
                 }
                 
                 HStack {
-                    Button("Missed it") {
+                    Button {
                         recordScore(false)
+                    } label: {
+                        Label("Missed it", systemImage: "xmark.circle")
                     }
                     .buttonStyle(.bordered)
                     
-                    Button("Got it") {
+                    Button {
                         recordScore(true)
+                    } label: {
+                        Label("Got it", systemImage: "checkmark.circle.fill")
                     }
                     .buttonStyle(.borderedProminent)
                 }
@@ -85,6 +106,7 @@ struct StudyView: View {
         }
         .padding()
         .tint(themeColor)
+        .navigationTitle(deck.name)
         .onAppear {
             startSession()
         }
@@ -98,9 +120,11 @@ struct StudyView: View {
     private var currentText: String {
         guard let card = currentCard else { return "" }
         
-        let showingFront = showBackFirst ? isFlipped : !isFlipped
-        
         return showingFront ? card.front : card.back
+    }
+    
+    private var showingFront: Bool {
+        showBackFirst ? isFlipped : !isFlipped
     }
     
     private var correctCount: Int {
